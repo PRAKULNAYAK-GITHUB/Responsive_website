@@ -116,74 +116,26 @@ img {
 
 .nav a:nth-child(1) {
   width: 46px;
-  height: 24px;
-  font-family: "Inter", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 16.18px;
-  line-height: 1.5;
-  letter-spacing: 0;
-  color: #162456;
 }
 
 .nav a:nth-child(2) {
   width: 40px;
-  height: 24px;
-  font-family: "Inter", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 16.18px;
-  line-height: 1.5;
-  letter-spacing: 0;
-  color: #162456;
 }
 
 .nav a:nth-child(3) {
   width: 86px;
-  height: 24px;
-  font-family: "Inter", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 16.18px;
-  line-height: 1.5;
-  letter-spacing: 0;
-  color: #162456;
 }
 
 .nav a:nth-child(4) {
   width: 71px;
-  height: 24px;
-  font-family: "Inter", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 16.18px;
-  line-height: 1.5;
-  letter-spacing: 0;
-  color: #162456;
 }
 
 .nav a:nth-child(5) {
   width: 34px;
-  height: 24px;
-  font-family: "Inter", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 16.18px;
-  line-height: 1.5;
-  letter-spacing: 0;
-  color: #162456;
 }
 
 .nav a:nth-child(6) {
   width: 61px;
-  height: 24px;
-  font-family: "Inter", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 16.18px;
-  line-height: 1.5;
-  letter-spacing: 0;
-  color: #162456;
 }
 
 .nav-shop {
@@ -344,68 +296,6 @@ main > section:first-child {
 }
 
 .pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 1.1rem;
-  background: linear-gradient(135deg, rgba(3, 89, 42, 0.95), rgba(10, 121, 55, 0.95));
-  color: #e7f8eb;
-  border-radius: 999px;
-  padding: 0.55rem 1.05rem;
-  font-size: 0.9rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-}
-
-.pill::before {
-  content: "📍";
-  display: inline-block;
-  font-size: 0.85rem;
-  line-height: 1;
-}
-
-.hero h1 {
-  font-size: clamp(3rem, 8vw, 5.5rem);
-  margin: 0.2rem 0 1.25rem;
-  line-height: 1.05;
-  color: #052f1e;
-}
-
-.hero-content {
-  position: relative;
-  z-index: 2;
-  max-width: 640px;
-  margin-bottom: clamp(13rem, 22vh, 18rem);
-}
-
-.pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 1.1rem;
-  background: rgba(3, 89, 42, 0.75);
-  color: #d9f2e4;
-  border-radius: 999px;
-  padding: 0.55rem 1rem 0.55rem 0.85rem;
-  font-size: 0.95rem;
-  font-weight: 500;
-  line-height: 1.3;
-}
-
-.pill-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1rem;
-  height: 1rem;
-  flex-shrink: 0;
-}
-
-.pill::before {
-  content: none;
-}
-
-.pill {
   box-sizing: border-box;
   display: inline-flex;
   align-items: center;
@@ -432,6 +322,9 @@ main > section:first-child {
 }
 
 .pill-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 16.500003814697266px;
   height: 22.505435943603516px;
   color: rgba(255, 255, 255, 0.8);
@@ -494,10 +387,6 @@ main > section:first-child {
   color: #2b5f47;
   line-height: 1.12;
   letter-spacing: 0;
-}
-
-.hero-bottle {
-  display: none;
 }
 
 .product {
@@ -844,33 +733,14 @@ main > section:first-child {
 
 .included li {
   position: relative;
-  padding-left: 1rem;
-  margin-bottom: 0.28rem;
-}
-
-.included li::before {
-  content: "◉";
-  position: absolute;
-  left: 0;
-  top: 0;
-  color: #7aa889;
-  font-size: 0.52rem;
-  line-height: 1.9;
-}
-
-.included li:nth-child(2),
-.included li:nth-child(3) {
-  font-weight: 700;
-  color: #244235;
-}
-
-.included li {
   padding-left: 1.55rem;
   margin-bottom: 0.34rem;
 }
 
 .included li::before {
   content: "";
+  position: absolute;
+  left: 0;
   top: 0.18rem;
   width: 0.95rem;
   height: 0.95rem;
@@ -881,6 +751,12 @@ main > section:first-child {
   color: transparent;
   font-size: 0;
   line-height: 1;
+}
+
+.included li:nth-child(2),
+.included li:nth-child(3) {
+  font-weight: 700;
+  color: #244235;
 }
 
 .cart {
@@ -1177,6 +1053,79 @@ th.winner .brand-chip span {
     grid-template-columns: 1fr;
   }
 
+  .topbar {
+    grid-template-columns: auto auto 1fr;
+    gap: 0.9rem;
+  }
+
+  .menu-toggle {
+    display: inline-block;
+    justify-self: center;
+  }
+
+  .nav {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.85rem;
+    background: rgba(244, 250, 245, 0.98);
+    border-bottom: 1px solid #d4ddd5;
+    padding: 1rem 1.1rem;
+    box-shadow: 0 10px 24px rgba(7, 43, 26, 0.08);
+  }
+
+  .nav.open {
+    display: flex;
+  }
+
+  .nav a,
+  .nav a:nth-child(1),
+  .nav a:nth-child(2),
+  .nav a:nth-child(3),
+  .nav a:nth-child(4),
+  .nav a:nth-child(5),
+  .nav a:nth-child(6) {
+    width: auto;
+    justify-content: flex-start;
+  }
+
+  .top-actions {
+    justify-self: end;
+    gap: 0.65rem;
+  }
+
+  .site-search.open {
+    width: 170px;
+  }
+
+  .hero-content {
+    max-width: min(100%, 640px);
+  }
+
+  .pill {
+    width: fit-content;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .pill-text {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .stats {
+    gap: 1.4rem;
+  }
+
+  .stats > div {
+    min-width: 140px;
+  }
+
   .gallery-main {
     height: 520px;
   }
@@ -1186,11 +1135,6 @@ th.winner .brand-chip span {
     align-items: center;
     gap: 1rem;
     background-position: 68% center;
-  }
-
-  .hero-bottle {
-    margin-left: auto;
-    margin-right: 0;
   }
 
   .percent-strip {
@@ -1208,35 +1152,20 @@ th.winner .brand-chip span {
     left: 0;
     width: 100%;
     grid-template-columns: auto auto auto;
-  }
-
-  .menu-toggle {
-    display: inline-block;
-    justify-self: center;
-  }
-
-  .nav {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 100%;
-    display: none;
-    flex-direction: column;
-    background: #f4faf5;
-    border-bottom: 1px solid #d4ddd5;
-    padding: 0.9rem 1.1rem;
+    gap: 0.7rem;
+    padding-inline: 1rem;
   }
 
   .site-search.open {
     width: 150px;
   }
 
-  .nav.open {
-    display: flex;
-  }
-
   .stats span {
     font-size: 1.2rem;
+  }
+
+  .stats {
+    gap: 1rem;
   }
 
   .fragrance-list {
@@ -1264,3 +1193,58 @@ th.winner .brand-chip span {
     min-height: 420px;
   }
 }
+
+@media (max-width: 560px) {
+  .topbar {
+    grid-template-columns: auto auto 1fr;
+    align-items: center;
+  }
+
+  .top-actions .btn-small {
+    display: none;
+  }
+
+  .site-search.open {
+    width: 132px;
+  }
+
+  .hero {
+    padding-inline: 1rem;
+  }
+
+  .hero-content {
+    max-width: 100%;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.1rem, 11vw, 3rem);
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem 1.2rem;
+  }
+
+  .stats > div:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .stats strong {
+    font-size: clamp(2.3rem, 12vw, 3.2rem);
+  }
+
+  .stats span {
+    font-size: 1rem;
+  }
+
+  .pill {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .percent-strip {
+    padding: 1.5rem 0.9rem;
+  }
+}
+

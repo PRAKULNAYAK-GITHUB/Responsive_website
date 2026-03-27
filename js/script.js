@@ -20,6 +20,15 @@ const plans = {
   double: 169.99
 };
 
+const searchableSections = [
+  { keywords: ["home", "hero", "live your best life"], target: "#home" },
+  { keywords: ["shop", "product", "subscription", "perfume"], target: "#shop" },
+  { keywords: ["fragrances", "fragrance", "collection", "scents"], target: "#fragrances" },
+  { keywords: ["about", "about us", "why gtg"], target: "#about" },
+  { keywords: ["blog", "articles", "guides"], target: "#blog" },
+  { keywords: ["contact", "footer", "newsletter"], target: "#contact" }
+];
+
 let activeImageIndex = 0;
 let activeFragrance = fragrances[0];
 let activeDoubleFragranceOne = fragrances[0];
@@ -36,11 +45,39 @@ const monthlyBottle = document.getElementById("monthlyBottle");
 const freeBottles = document.getElementById("freeBottles");
 const doubleMonthlyBottles = document.getElementById("doubleMonthlyBottles");
 const doubleFreeBottles = document.getElementById("doubleFreeBottles");
+const addToCart = document.getElementById("addToCart");
 const cartNote = document.getElementById("cartNote");
 const toast = document.getElementById("toast");
 const searchToggle = document.getElementById("searchToggle");
 const siteSearch = document.getElementById("siteSearch");
 const siteSearchInput = document.getElementById("siteSearchInput");
+
+function createBottleImage(src, alt) {
+  const image = document.createElement("img");
+  image.src = src;
+  image.alt = alt;
+  return image;
+}
+
+function renderFragranceOptions(container, activeSelection, onSelect, altFormatter) {
+  container.innerHTML = "";
+
+  fragrances.forEach((item, index) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = `fragrance ${item.name === activeSelection.name ? "active" : ""}`;
+    button.innerHTML = `<div class="fragrance-label"><span class="radio-mark ${item.name === activeSelection.name ? "checked" : ""}" aria-hidden="true"></span><small>${item.name}</small></div><img src="${item.image}" alt="${altFormatter(item, index)}">`;
+    button.addEventListener("click", () => onSelect(item));
+    container.appendChild(button);
+  });
+}
+
+function renderBottleList(container, items, altFormatter) {
+  container.innerHTML = "";
+  items.forEach((item, index) => {
+    container.appendChild(createBottleImage(item.image, altFormatter(item, index)));
+  });
+}
 
 function renderGallery() {
   thumbGrid.innerHTML = "";
@@ -67,68 +104,57 @@ function setMainImage(index) {
 }
 
 function renderFragrances() {
-  fragranceList.innerHTML = "";
-  freeBottles.innerHTML = "";
-  fragranceListDoubleOne.innerHTML = "";
-  fragranceListDoubleTwo.innerHTML = "";
-  doubleMonthlyBottles.innerHTML = "";
-  doubleFreeBottles.innerHTML = "";
-
-  fragrances.forEach((item) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = `fragrance ${item.name === activeFragrance.name ? "active" : ""}`;
-    button.innerHTML = `<div class="fragrance-label"><span class="radio-mark ${item.name === activeFragrance.name ? "checked" : ""}" aria-hidden="true"></span><small>${item.name}</small></div><img src="${item.image}" alt="${item.name} fragrance">`;
-    button.addEventListener("click", () => {
+  renderFragranceOptions(
+    fragranceList,
+    activeFragrance,
+    (item) => {
       activeFragrance = item;
       monthlyBottle.src = item.image;
       renderFragrances();
       updateCartNote();
-    });
-    fragranceList.appendChild(button);
+    },
+    (item) => `${item.name} fragrance`
+  );
 
-    const mini = document.createElement("img");
-    mini.src = item.image;
-    mini.alt = `${item.name} sample bottle`;
-    freeBottles.appendChild(mini);
-  });
+  renderBottleList(freeBottles, fragrances, (item) => `${item.name} sample bottle`);
 
-  renderDoubleFragranceList(fragranceListDoubleOne, activeDoubleFragranceOne, (item) => {
+  renderFragranceOptions(fragranceListDoubleOne, activeDoubleFragranceOne, (item) => {
     activeDoubleFragranceOne = item;
     renderFragrances();
     updateCartNote();
-  });
+  }, (item, index) => `${item.name} fragrance ${index + 1}`);
 
-  renderDoubleFragranceList(fragranceListDoubleTwo, activeDoubleFragranceTwo, (item) => {
+  renderFragranceOptions(fragranceListDoubleTwo, activeDoubleFragranceTwo, (item) => {
     activeDoubleFragranceTwo = item;
     renderFragrances();
     updateCartNote();
-  });
+  }, (item, index) => `${item.name} fragrance ${index + 1}`);
 
-  [activeDoubleFragranceOne, activeDoubleFragranceTwo].forEach((item, index) => {
-    const monthly = document.createElement("img");
-    monthly.src = item.image;
-    monthly.alt = `Monthly bottle ${index + 1} - ${item.name}`;
-    doubleMonthlyBottles.appendChild(monthly);
-  });
-
-  fragrances.forEach((item) => {
-    const mini = document.createElement("img");
-    mini.src = item.image;
-    mini.alt = `${item.name} sample bottle`;
-    doubleFreeBottles.appendChild(mini);
-  });
+  renderBottleList(
+    doubleMonthlyBottles,
+    [activeDoubleFragranceOne, activeDoubleFragranceTwo],
+    (item, index) => `Monthly bottle ${index + 1} - ${item.name}`
+  );
+  renderBottleList(doubleFreeBottles, fragrances, (item) => `${item.name} sample bottle`);
 }
 
-function renderDoubleFragranceList(container, activeSelection, onSelect) {
-  fragrances.forEach((item, index) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = `fragrance ${item.name === activeSelection.name ? "active" : ""}`;
-    button.innerHTML = `<div class="fragrance-label"><span class="radio-mark ${item.name === activeSelection.name ? "checked" : ""}" aria-hidden="true"></span><small>${item.name}</small></div><img src="${item.image}" alt="${item.name} fragrance ${index + 1}">`;
-    button.addEventListener("click", () => onSelect(item));
-    container.appendChild(button);
-  });
+function slugify(value) {
+  return value.trim().toLowerCase().replace(/\s+/g, "-");
+}
+
+function updateAddToCartLink() {
+  const url = new URL("https://example.com/cart");
+
+  url.searchParams.set("plan", activePlan);
+
+  if (activePlan === "double") {
+    url.searchParams.set("fragrance1", slugify(activeDoubleFragranceOne.name));
+    url.searchParams.set("fragrance2", slugify(activeDoubleFragranceTwo.name));
+  } else {
+    url.searchParams.set("fragrance", slugify(activeFragrance.name));
+  }
+
+  addToCart.href = url.toString();
 }
 
 function updatePlanRows() {
@@ -144,6 +170,9 @@ function updatePlanRows() {
 
 function updateCartNote() {
   const price = plans[activePlan].toFixed(2);
+
+  updateAddToCartLink();
+
   if (activePlan === "double") {
     cartNote.textContent = `Double plan, ${activeDoubleFragranceOne.name} + ${activeDoubleFragranceTwo.name} selected - $${price}`;
     return;
@@ -216,15 +245,6 @@ function setupMenu() {
 }
 
 function setupSiteSearch() {
-  const searchableSections = [
-    { keywords: ["home", "hero", "live your best life"], target: "#home" },
-    { keywords: ["shop", "product", "subscription", "perfume"], target: "#shop" },
-    { keywords: ["fragrances", "fragrance", "collection", "scents"], target: "#fragrances" },
-    { keywords: ["about", "about us", "why gtg"], target: "#about" },
-    { keywords: ["blog", "articles", "guides"], target: "#blog" },
-    { keywords: ["contact", "footer", "newsletter"], target: "#contact" }
-  ];
-
   searchToggle.addEventListener("click", () => {
     const next = !siteSearch.classList.contains("open");
     siteSearch.classList.toggle("open", next);
@@ -298,7 +318,7 @@ function setupInPageNavigation() {
 }
 
 function setupCartAction() {
-  document.getElementById("addToCart").addEventListener("click", () => {
+  addToCart.addEventListener("click", () => {
     const price = plans[activePlan].toFixed(2);
     const selection =
       activePlan === "double"
@@ -345,6 +365,50 @@ function setupRevealAnimation() {
   document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
 }
 
+function setupPercentCountup() {
+  const counters = document.querySelectorAll(".percent-strip strong");
+  if (!counters.length) {
+    return;
+  }
+
+  const animateCounter = (element) => {
+    const finalText = element.textContent || "";
+    const target = Number(finalText.replace(/\D/g, ""));
+    const suffix = finalText.replace(/\d/g, "");
+    const duration = 1400;
+    const start = performance.now();
+
+    const frame = (now) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const value = Math.round(target * eased);
+      element.textContent = `${value}${suffix}`;
+
+      if (progress < 1) {
+        requestAnimationFrame(frame);
+      }
+    };
+
+    requestAnimationFrame(frame);
+  };
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) {
+          return;
+        }
+
+        animateCounter(entry.target);
+        observer.unobserve(entry.target);
+      });
+    },
+    { threshold: 0.5 }
+  );
+
+  counters.forEach((counter) => observer.observe(counter));
+}
+
 renderGallery();
 renderFragrances();
 setupGalleryNav();
@@ -356,4 +420,5 @@ setupInPageNavigation();
 setupCartAction();
 setupNewsletter();
 setupRevealAnimation();
+setupPercentCountup();
 updatePlanRows();
